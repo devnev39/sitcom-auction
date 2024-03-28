@@ -19,14 +19,12 @@ import { UserContext } from '../context/UserContext';
 import usersApi from '../api/usersApi';
 import { AlertContext } from '../context/AlertContext';
 
-const pages = ['Home', 'Characters', 'IAM', 'About'];
-
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const { user, googleSignIn, logout } = UserAuth();
-  const {setUser} = React.useContext(UserContext);
+  const {appUser, setUser} = React.useContext(UserContext);
 
   const {OpenAlert} = React.useContext(AlertContext);
 
@@ -112,11 +110,21 @@ function Navbar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={() => setCurrentComponent(page)}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={() => setCurrentComponent('Home')}>
+                <Typography textAlign="center">Home</Typography>
+              </MenuItem>
+              {appUser ? <MenuItem onClick={() => setCurrentComponent('Home')}>
+                <Typography textAlign="center">Auction</Typography>
+              </MenuItem> : null}
+              {appUser ? <MenuItem onClick={() => setCurrentComponent('Home')}>
+                <Typography textAlign="center">IAM</Typography>
+              </MenuItem> : null}
+              <MenuItem onClick={() => setCurrentComponent('Home')}>
+                <Typography textAlign="center">Team View</Typography>
+              </MenuItem>
+              <MenuItem onClick={() => setCurrentComponent('Home')}>
+                <Typography textAlign="center">About</Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <GavelIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -139,15 +147,37 @@ function Navbar() {
             FictionFusion
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={() => setCurrentComponent(page)}
+            <Button
+                onClick={() => setCurrentComponent('Home')}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
-              </Button>
-            ))}
+                Home
+            </Button>
+            {appUser ? <Button
+                onClick={() => setCurrentComponent('Auction')}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                Auction
+            </Button> : null}
+            {appUser ? <Button
+                onClick={() => setCurrentComponent('IAM')}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                IAM
+            </Button> : null}
+            <Button
+                onClick={() => setCurrentComponent('Team View')}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                Team View
+            </Button>
+            <Button
+                onClick={() => setCurrentComponent('About')}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                About
+            </Button>
+
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
