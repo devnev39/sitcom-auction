@@ -6,6 +6,7 @@ import About from './pages/About';
 import Characters from './pages/Characters';
 import Auction from './pages/Auction';
 import CommonAlert from './components/CommonAlert';
+import IAM from './pages/IAM';
 
 function App() {
   const {currentComponent} = useContext(ComponentSelection);
@@ -17,7 +18,7 @@ function App() {
       {currentComponent == 'Characters' ? <Characters /> : null}
       {currentComponent == 'About' ? <About /> : null}
       {currentComponent == 'Auction' ? <Auction /> : null}
-      {currentComponent == 'IAM' ? <Auction /> : null}
+      {currentComponent == 'IAM' ? <IAM /> : null}
       <CommonAlert />
     </>
   )

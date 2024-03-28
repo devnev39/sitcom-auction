@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,15 +15,20 @@ import { ComponentSelection } from '../context/componentSelection';
 import { UserAuth } from '../context/AuthContext';
 import GoogleIcon from '@mui/icons-material/Google';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { UserContext } from '../context/UserContext';
+import usersApi from '../api/usersApi';
+import { AlertContext } from '../context/AlertContext';
 
 const pages = ['Home', 'Characters', 'IAM', 'About'];
-const settings = ['Logout'];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const { user, googleSignIn, logout } = UserAuth();
+  const {setUser} = React.useContext(UserContext);
+
+  const {OpenAlert} = React.useContext(AlertContext);
 
   const {setCurrentComponent} = React.useContext(ComponentSelection);
 
@@ -42,6 +46,19 @@ function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  React.useEffect(() => {
+    if (!user) return;
+    console.log(user.email);
+    usersApi.getUserEmail(user.email).then((resp) => {
+      if(resp.exists()) {
+        setUser(resp.data());
+      } else {
+        OpenAlert('User not found !');
+        logout();
+      }
+    })
+  }, [OpenAlert, logout, setUser, user]);
 
   return (
     <AppBar position="static">
@@ -161,11 +178,9 @@ function Navbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={logout}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

@@ -5,13 +5,14 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextFie
 import { useDispatch, useSelector } from 'react-redux';
 import charactersApi from '../api/charactersApi';
 import { clearCharacters, removeCharacter, setCharacters, updateCharacters } from '../feature/charactersSlice';
-import { DataGrid, GridActionsCell, GridActionsCellItem, GridDeleteIcon } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem, GridDeleteIcon } from '@mui/x-data-grid';
 import CreateIcon from '@mui/icons-material/Create';
 import { Formik } from 'formik';
 import dayjs from 'dayjs';
 import * as Yup from "yup";
 import { AlertContext } from '../context/AlertContext';
 import EditIcon from '@mui/icons-material/Edit';
+import { UserContext } from '../context/UserContext';
 
 const getRowId = (row) => {
   return row.id;
@@ -20,6 +21,8 @@ const getRowId = (row) => {
 export default function Characters() {
   const characters = useSelector((state) => state.character.characters);
   const loaded = useSelector((state) => state.character.loaded);
+
+  const { appUser } = useContext(UserContext);
 
   const [initialState, setInitialState] = useState({
     name: "",
@@ -161,6 +164,10 @@ export default function Characters() {
 
   useEffect(() => {
     if (loaded) return;
+    if (!appUser) {
+      OpenAlert('Need to login to view this page !');
+      return;
+    }
     charactersApi.getCharacters().then((data) => {
       dispatch(clearCharacters());
       dispatch(setCharacters(data));
@@ -171,76 +178,82 @@ export default function Characters() {
 
   return (
     <>
-      <Card sx={{mt: "2rem"}}>
-        <Box sx={{display: "flex", justifyContent: "center"}}>
-          <Typography variant='h4'>
-            Characters
-          </Typography>
-        </Box>
-        <CardContent>
-          <DataGrid
-            columns={columns}
-            rows={characters}
-            getRowId={getRowId}
-           />
-           <Box sx={{display: "flex", justifyContent: "center", mt: "2rem"}}>
-            <Button variant='outlined' onClick={() => handleOpen()} startIcon={<CreateIcon />}>Add</Button>
+    {
+      appUser ? 
+      <>
+        <Card sx={{mt: "2rem"}}>
+          <Box sx={{display: "flex", justifyContent: "center"}}>
+            <Typography variant='h4'>
+              Characters
+            </Typography>
           </Box>
-        </CardContent>
-      </Card>
-      <Dialog 
-        open={open}
-        onClose={() => handleClose()}
-        fullWidth
-      >
-        <DialogTitle>
-          {/* <Typography variant='h3'> */}
-            Create Character
-          {/* </Typography> */}
-        </DialogTitle>
-        <DialogContent>
-          <Formik enableReinitialize initialValues={initialState} validationSchema={Yup.object({
-                  name: Yup.string().required('Required'),
-                  sitcom: Yup.string().required('Required'),
-                  basePoints: Yup.number().required('Required'),
-                  refPoints: Yup.number().required('Required'),
-                  lang: Yup.string().required(),
-                  url: Yup.string().required('Required')
-                })} onSubmit={(values, {setSubmitting}) => formSubmitted(values, setSubmitting)}>
-                  {(formik) => (
-                    <form id='characterForm' onSubmit={formik.handleSubmit}>
-                      <Box sx={{py: '0.5rem'}}>
-                        <TextField fullWidth size='small' label='Name' error={formik.touched.name && formik.errors.name} id='name' {...formik.getFieldProps('name')} />
-                      </Box>
-                      <Box sx={{py: '0.5rem'}}>
-                        <TextField fullWidth size='small' label='SitCom' error={formik.touched.sitcom && formik.errors.sitcom} id='sitcom' {...formik.getFieldProps('sitcom')} />
-                      </Box>
-                      
-                      <Box sx={{py: '0.5rem'}}>
-                        <TextField type='number' fullWidth size='small' label='Base Points' error={formik.touched.basePoints && formik.errors.basePoints} id='basePoints' {...formik.getFieldProps('basePoints')} />
-                      </Box>
-                      
-                      <Box sx={{py: '0.5rem'}}>
-                        <TextField type='number' fullWidth size='small' label='Ref Points' error={formik.touched.refPoints && formik.errors.refPoints} id='refPoints' {...formik.getFieldProps('refPoints')} />
-                      </Box>
-                      
-                      <Box sx={{py: '0.5rem'}}>
-                        <TextField fullWidth size='small' label='Lang' error={formik.touched.lang && formik.errors.lang} id='lang' {...formik.getFieldProps('lang')} />
-                      </Box>
-                      
-                      <Box sx={{py: '0.5rem'}}>
-                        <TextField fullWidth size='small' label='Url' error={formik.touched.url && formik.errors.url} id='url' {...formik.getFieldProps('url')} />
-                      </Box>
-                      
-                    </form>
-                  )}
-                </Formik>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color='secondary' variant='contained'>Close</Button>
-          <Button form='characterForm' type='submit' color='success' variant='outlined'>{isUpdating ? 'Update' : 'Create'}</Button>
-        </DialogActions>
-      </Dialog>
-    </> 
+          <CardContent>
+            <DataGrid
+              columns={columns}
+              rows={characters}
+              getRowId={getRowId}
+            />
+            <Box sx={{display: "flex", justifyContent: "center", mt: "2rem"}}>
+              <Button variant='outlined' onClick={() => handleOpen()} startIcon={<CreateIcon />}>Add</Button>
+            </Box>
+          </CardContent>
+        </Card>
+        <Dialog 
+          open={open}
+          onClose={() => handleClose()}
+          fullWidth
+        >
+          <DialogTitle>
+            {/* <Typography variant='h3'> */}
+              Create Character
+            {/* </Typography> */}
+          </DialogTitle>
+          <DialogContent>
+            <Formik enableReinitialize initialValues={initialState} validationSchema={Yup.object({
+                    name: Yup.string().required('Required'),
+                    sitcom: Yup.string().required('Required'),
+                    basePoints: Yup.number().required('Required'),
+                    refPoints: Yup.number().required('Required'),
+                    lang: Yup.string().required(),
+                    url: Yup.string().required('Required')
+                  })} onSubmit={(values, {setSubmitting}) => formSubmitted(values, setSubmitting)}>
+                    {(formik) => (
+                      <form id='characterForm' onSubmit={formik.handleSubmit}>
+                        <Box sx={{py: '0.5rem'}}>
+                          <TextField fullWidth size='small' label='Name' error={formik.touched.name && formik.errors.name} id='name' {...formik.getFieldProps('name')} />
+                        </Box>
+                        <Box sx={{py: '0.5rem'}}>
+                          <TextField fullWidth size='small' label='SitCom' error={formik.touched.sitcom && formik.errors.sitcom} id='sitcom' {...formik.getFieldProps('sitcom')} />
+                        </Box>
+                        
+                        <Box sx={{py: '0.5rem'}}>
+                          <TextField type='number' fullWidth size='small' label='Base Points' error={formik.touched.basePoints && formik.errors.basePoints} id='basePoints' {...formik.getFieldProps('basePoints')} />
+                        </Box>
+                        
+                        <Box sx={{py: '0.5rem'}}>
+                          <TextField type='number' fullWidth size='small' label='Ref Points' error={formik.touched.refPoints && formik.errors.refPoints} id='refPoints' {...formik.getFieldProps('refPoints')} />
+                        </Box>
+                        
+                        <Box sx={{py: '0.5rem'}}>
+                          <TextField fullWidth size='small' label='Lang' error={formik.touched.lang && formik.errors.lang} id='lang' {...formik.getFieldProps('lang')} />
+                        </Box>
+                        
+                        <Box sx={{py: '0.5rem'}}>
+                          <TextField fullWidth size='small' label='Url' error={formik.touched.url && formik.errors.url} id='url' {...formik.getFieldProps('url')} />
+                        </Box>
+                        
+                      </form>
+                    )}
+                  </Formik>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color='secondary' variant='contained'>Close</Button>
+            <Button form='characterForm' type='submit' color='success' variant='outlined'>{isUpdating ? 'Update' : 'Create'}</Button>
+          </DialogActions>
+        </Dialog>
+      </>
+      : null
+    }
+    </>
   )
 }

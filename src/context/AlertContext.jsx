@@ -23,7 +23,7 @@ export const AlertContextProvider = ({ children }) => {
 
     const OpenAlert = (message, severity) => {
         setMessage(message);
-        setSeverity(severity);
+        setSeverity(severity || 'error');
         handleClick();
     }
 
