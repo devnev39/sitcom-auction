@@ -9,7 +9,7 @@ export default {
         return result;
     },
 
-    deleteUser: async (email) => {
+    deleteUser: async (email) => { 
         await deleteDoc(doc(db, 'users', email));
     },
 

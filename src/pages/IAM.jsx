@@ -39,35 +39,6 @@ export default function IAM () {
 
   const { OpenAlert } = useContext(AlertContext)
 
-  const addNewUser = (values, setSubmitting) => {
-    setSubmitting(true)
-    values.createdAt = dayjs().toISOString()
-    usersApi
-      .createUser(values)
-      .then(resp => {
-        dispatch(setUsers(resp))
-        OpenAlert('User created !', 'success')
-        setSubmitting(false)
-        handleClose()
-      })
-      .catch(err => {
-        OpenAlert(err.message)
-        setSubmitting(false)
-      })
-  }
-
-  const deleteUser = id => {
-    usersApi
-      .deleteUser(id)
-      .then(() => {
-        dispatch(removeUser(id))
-      })
-      .catch(err => {
-        OpenAlert(err.message)
-        console.log(err)
-      })
-  }
-
   const columns = useMemo(
     () => [
       {
@@ -86,10 +57,10 @@ export default function IAM () {
         field: 'actions',
         type: 'actions',
         headerName: 'Actions',
-        getActions: value => {
+        getActions: (value) => {
           return [
             <GridActionsCellItem
-              onClick={() => deleteUser(value.email)}
+              onClick={() => deleteUser(value.id)}
               icon={<GridDeleteIcon color='error' />}
               key={value.id}
             />
@@ -99,6 +70,36 @@ export default function IAM () {
     ],
     [users]
   )
+
+  const addNewUser = (values, setSubmitting) => {
+    setSubmitting(true)
+    values.createdAt = dayjs().toISOString()
+    usersApi
+      .createUser(values)
+      .then(resp => {
+        dispatch(setUsers(resp))
+        OpenAlert('User created !', 'success')
+        setSubmitting(false)
+        handleClose()
+      })
+      .catch(err => {
+        OpenAlert(err.message)
+        setSubmitting(false)
+      })
+  }
+
+  const deleteUser = (id) => {
+    usersApi
+      .deleteUser(id)
+      .then(() => {
+        dispatch(removeUser(id))
+        OpenAlert('User deleted !');
+      })
+      .catch(err => {
+        OpenAlert(err.message)
+        console.log(err)
+      })
+  }
 
   useEffect(() => {
     usersApi.getUsers().then(resp => {

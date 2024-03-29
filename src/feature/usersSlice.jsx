@@ -11,10 +11,10 @@ const userSlice = createSlice({
         },
 
         removeUser: (state, action) => {
-            state.users = state.users.filter((u) => u.id != action.payload);
+            state.users = state.users.filter((u) => u.email != action.payload);
         },
         
-        clearUsers: (state, action) => {
+        clearUsers: (state) => {
             state.users = [];
         }
     }
