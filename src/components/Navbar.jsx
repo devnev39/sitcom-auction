@@ -28,7 +28,7 @@ function Navbar() {
 
   const {OpenAlert} = React.useContext(AlertContext);
 
-  const {setCurrentComponent} = React.useContext(ComponentSelection);
+  const {currentComponent, setCurrentComponent} = React.useContext(ComponentSelection);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -58,6 +58,10 @@ function Navbar() {
     })
   }, [OpenAlert, logout, setUser, user]);
 
+  React.useEffect(() => {
+    console.log(currentComponent);
+  }, [currentComponent])
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -80,7 +84,6 @@ function Navbar() {
           >
             FictionFusion
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -113,16 +116,16 @@ function Navbar() {
               <MenuItem onClick={() => setCurrentComponent('Home')}>
                 <Typography textAlign="center">Home</Typography>
               </MenuItem>
-              {appUser ? <MenuItem onClick={() => setCurrentComponent('Home')}>
+              {appUser ? <MenuItem onClick={() => setCurrentComponent('Auction')}>
                 <Typography textAlign="center">Auction</Typography>
               </MenuItem> : null}
-              {appUser ? <MenuItem onClick={() => setCurrentComponent('Home')}>
+              {appUser ? <MenuItem onClick={() => setCurrentComponent('IAM')}>
                 <Typography textAlign="center">IAM</Typography>
               </MenuItem> : null}
-              <MenuItem onClick={() => setCurrentComponent('Home')}>
+              <MenuItem onClick={() => setCurrentComponent('Team View')}>
                 <Typography textAlign="center">Team View</Typography>
               </MenuItem>
-              <MenuItem onClick={() => setCurrentComponent('Home')}>
+              <MenuItem onClick={() => setCurrentComponent('About')}>
                 <Typography textAlign="center">About</Typography>
               </MenuItem>
             </Menu>
