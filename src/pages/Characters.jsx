@@ -240,6 +240,9 @@ export default function Characters() {
                         
                         <Box sx={{py: '0.5rem'}}>
                           <TextField fullWidth size='small' label='Url' error={formik.touched.url && formik.errors.url} id='url' {...formik.getFieldProps('url')} />
+                          <Box sx={{display: "flex", justifyContent: "center", mt: "2rem"}}>
+                            <img style={{width: '10vw'}} src={formik.values.url} />
+                          </Box>
                         </Box>
                         
                       </form>
