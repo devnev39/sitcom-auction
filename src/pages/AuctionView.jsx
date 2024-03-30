@@ -201,7 +201,7 @@ export default function AuctionView() {
           </Grid>
           <Grid item xs={4}>
             <Box sx={{display: 'flex', justifyContent: 'center'}}>
-              <img style={{height: "60vh"}} src={characters[index].url} />
+              <img style={{maxHeight: "60vh", maxWidth: "30vw"}} src={characters[index].url} />
             </Box>
             <Box sx={{display: 'flex', justifyContent: 'center', mt: '2rem'}}>
               {
