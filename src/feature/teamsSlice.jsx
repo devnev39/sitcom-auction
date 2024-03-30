@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const teamsSlice = createSlice({
     name: 'team',
     initialState: {
-        teams: []
+        teams: [],
+        currentTeam: {}
     },
     reducers: {
         setTeams: (state, action) => {
@@ -20,11 +21,14 @@ const teamsSlice = createSlice({
 
         updateTeam: (state, action) => {
             const ind = state.teams.findIndex((t) => t.id == action.payload.id);
-            state.teams = state.teams.filter((t) => t.id != action.payload.id);
-            state.teams = state.teams.splice(ind, 0, action.payload);
-        }
+            state.teams.splice(ind, 1, action.payload);
+        },
+
+        setCurrentTeam: (state, action) => {
+            state.currentTeam = action.payload;
+        },
     }
 })
 
-export const {setTeams, removeTeam, clearTeams, updateTeam} = teamsSlice.actions;
+export const {setTeams, removeTeam, clearTeams, updateTeam, setCurrentTeam} = teamsSlice.actions;
 export default teamsSlice.reducer;

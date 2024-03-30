@@ -1,6 +1,6 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore/lite"
 import { db } from "../db/firebase"
 import { v4 as uuidv4 } from 'uuid';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, where, onSnapshot } from 'firebase/firestore';
 
 export default {
     getTeams: async () => {
@@ -27,5 +27,21 @@ export default {
 
     deleteTeam: async (id) => {
         await deleteDoc(doc(db, 'teams', id));
+    },
+
+    getTeam: async (key) => {
+        const docs = await getDocs(query(collection(db, 'teams'), where('key','==',key)));
+        let result = null;
+        docs.forEach((d) => {
+            result = d.data();
+        })
+        return result;
+    },
+
+    onTeamUpdate: (id, callback) => {
+        const unsub = onSnapshot(doc(db, 'teams', id), (doc) => {
+            callback(doc.data());
+        });
+        return unsub;
     }
 }

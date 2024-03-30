@@ -4,19 +4,22 @@ import { ComponentSelection } from './context/componentSelection';
 import Home from './pages/Home';
 import About from './pages/About';
 import Auction from './pages/Auction';
+import AuctionView from './pages/AuctionView';
 import CommonAlert from './components/CommonAlert';
 import IAM from './pages/IAM';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import AppView from './pages/AppView';
 
 function App() {
-  const {currentComponent} = useContext(ComponentSelection);
-
   return (
     <>
       <Navbar />
-      {currentComponent == 'Home' ? <Home /> : null}
-      {currentComponent == 'About' ? <About /> : null}
-      {currentComponent == 'Auction' ? <Auction /> : null}
-      {currentComponent == 'IAM' ? <IAM /> : null}
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<AppView />} />
+          <Route path='/view' element={<AuctionView />}/>
+        </Routes>
+      </BrowserRouter>
       <CommonAlert />
     </>
   )

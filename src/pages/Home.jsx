@@ -1,12 +1,15 @@
-import { Box, Typography } from '@mui/material'
-import React from 'react'
+import { Box, Button } from '@mui/material'
+import { useNavigate } from 'react-router'
 
 export default function Home() {
+  const navigate = useNavigate();
   return (
     <Box sx={{width: "100vw", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center"}}>
-      <Typography variant='h3'>
-        Fiction Fusion
-      </Typography>
+      <Button variant='outlined' onClick={() => {
+        navigate("/view");
+      }}>
+        Open Auction View
+      </Button>
     </Box>
   )
 }

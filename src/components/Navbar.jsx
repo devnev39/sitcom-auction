@@ -63,7 +63,7 @@ function Navbar() {
   }, [currentComponent])
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{display: window.location.toString().includes('/view') ? "none" : 'block'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <GavelIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />

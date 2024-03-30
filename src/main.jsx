@@ -8,6 +8,9 @@ import store from './app/store.js';
 import { AlertContextProvider } from './context/AlertContext.jsx'
 import { AuthContextProvider } from './context/AuthContext.jsx'
 import { UserContextProvider } from './context/UserContext.jsx'
+import { ThemeProvider, createTheme } from '@mui/material'
+
+const theme = createTheme();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -16,7 +19,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <UserContextProvider>
           <AlertContextProvider>
             <ComponentSelectionProvider>
-              <App />
+              <ThemeProvider theme={theme}>
+                <App />
+              </ThemeProvider>
             </ComponentSelectionProvider>
           </AlertContextProvider>
       </UserContextProvider>

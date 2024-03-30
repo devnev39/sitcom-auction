@@ -14,8 +14,7 @@ const charactersSlice = createSlice({
 
         updateCharacters: (state, action) => {
             const index = state.characters.findIndex((c) => c.id == action.payload.id);
-            state.characters = state.characters.filter((c) => c.id != action.payload.id);
-            state.characters.splice(index, 0, action.payload);
+            state.characters.splice(index, 1, action.payload);
         },
 
         removeCharacter: (state, action) => {

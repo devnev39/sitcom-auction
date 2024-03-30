@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import charactersApi from '../api/charactersApi';
-import { clearCharacters, removeCharacter, setCharacters, updateCharacters } from '../feature/charactersSlice';
+import { removeCharacter, setCharacters, updateCharacters } from '../feature/charactersSlice';
 import { DataGrid, GridActionsCellItem, GridDeleteIcon } from '@mui/x-data-grid';
 import CreateIcon from '@mui/icons-material/Create';
 import { Formik } from 'formik';
@@ -20,7 +20,6 @@ const getRowId = (row) => {
 
 export default function Characters() {
   const characters = useSelector((state) => state.character.characters);
-  const loaded = useSelector((state) => state.character.loaded);
 
   const { appUser } = useContext(UserContext);
 
@@ -31,6 +30,10 @@ export default function Characters() {
     refPoints: undefined,
     url: "",
     lang: undefined,
+    sold: false,
+    teamName: "",
+    soldPoints: 0,
+    teamId: "",
   });
 
   const resetInitialState = () => {
@@ -162,26 +165,12 @@ export default function Characters() {
     }
   }
 
-  useEffect(() => {
-    if (loaded) return;
-    if (!appUser) {
-      OpenAlert('Need to login to view this page !');
-      return;
-    }
-    charactersApi.getCharacters().then((data) => {
-      dispatch(clearCharacters());
-      dispatch(setCharacters(data));
-    }).catch((err) => {
-      OpenAlert(err, 'error');
-    });
-  }, []);
-
   return (
     <>
     {
       appUser ? 
       <>
-        <Card sx={{mt: "2rem"}}>
+        <Card sx={{mt: "2rem", p: '1rem'}}>
           <Box sx={{display: "flex", justifyContent: "center"}}>
             <Typography variant='h4'>
               Characters

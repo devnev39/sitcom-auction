@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import { UserContext } from '../context/UserContext'
 import {
     Box,
@@ -18,7 +18,7 @@ import { DataGrid, GridActionsCellItem, GridDeleteIcon } from '@mui/x-data-grid'
 import { useDispatch, useSelector } from 'react-redux';
 import { AlertContext } from '../context/AlertContext';
 import teamsApi from '../api/teamsApi';
-import { clearTeams, removeTeam, setTeams, updateTeam } from '../feature/teamsSlice';
+import { removeTeam, setTeams, updateTeam } from '../feature/teamsSlice';
 import EditIcon from '@mui/icons-material/Edit';
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -47,12 +47,14 @@ export default function Team () {
     const [initialState, setInitialState] = useState({
         name :"",
         budget: undefined,
+        characters: [],
     });
 
     const resetInitialState = () => {
         setInitialState({
             name :"",
-            budget: undefined, 
+            budget: undefined,
+            characters: [],
         });
     }
 
@@ -152,21 +154,12 @@ export default function Team () {
         }
     }
 
-    useEffect(() => {
-        teamsApi.getTeams().then((resp) => {
-            dispatch(clearTeams());
-            dispatch(setTeams(resp));
-        }).catch((err) => {
-            OpenAlert(err.message);
-        });
-    }, [OpenAlert, dispatch]);
-
     return (
         <>
         {
             appUser ? 
             <>
-                <Card sx={{mt: "2rem"}}>
+                <Card sx={{mt: "2rem", p: '1rem'}}>
                     <Box sx={{display: "flex", justifyContent: "center"}}>
                         <Typography variant='h4'>
                             Teams
@@ -183,7 +176,7 @@ export default function Team () {
                             variant='outlined'
                             onClick={() => handleOpen()}
                             startIcon={<CreateIcon />}
-                        >
+                            >
                             Add
                         </Button>
                         </Box>
