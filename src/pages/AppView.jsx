@@ -5,6 +5,7 @@ import About from './About';
 import Auction from './Auction';
 import IAM from './IAM';
 import TeamView from './TeamView';
+import Footer from './Footer';
 
 export default function AppView() {
     const {currentComponent} = useContext(ComponentSelection);
@@ -15,6 +16,7 @@ export default function AppView() {
     {currentComponent == 'Auction' ? <Auction /> : null}
     {currentComponent == 'IAM' ? <IAM /> : null}
     {currentComponent == 'Team View' ? <TeamView /> : null}
+    <Footer />
     </>
   )
 }
