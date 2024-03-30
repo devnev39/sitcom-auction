@@ -4,7 +4,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 
 export default function Footer() {
   return (
-    <Box position={'absolute'} bottom={'1rem'} alignItems={'center'} width={'100%'} display={'flex'} justifyContent={'space-between'}>
+    <Box marginTop={'5rem'} alignItems={'center'} width={'100%'} display={'flex'} justifyContent={'space-between'}>
         <Box marginLeft={'2rem'}>
           <Typography>
             Developed and maintained by @devnev39

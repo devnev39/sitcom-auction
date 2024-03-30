@@ -6,6 +6,7 @@ import Auction from './Auction';
 import IAM from './IAM';
 import TeamView from './TeamView';
 import Footer from './Footer';
+import { Box } from '@mui/material';
 
 export default function AppView() {
     const {currentComponent} = useContext(ComponentSelection);
