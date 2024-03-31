@@ -178,7 +178,7 @@ export default function AuctionView() {
   return (
     <Box>
     {
-      appUser && characters.length && teams.length ?
+      appUser && characters.length ?
       <Box>
         <Grid container spacing={1} sx={{mt: "2rem"}}>
           <Grid item xs={4}>
