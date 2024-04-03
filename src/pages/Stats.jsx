@@ -62,6 +62,11 @@ export default function Stats() {
       width: 150,
     },
     {
+      field: 'refPoints',
+      headerName: 'Ref Points',
+      width: 150,
+    },
+    {
       field: 'soldPoints',
       headerName: 'Sold Points',
       width: 150
@@ -107,7 +112,7 @@ export default function Stats() {
 
   return (
     <Grid container>
-      <Grid item xs={7}>
+      <Grid item xs={8}>
       {
         teams.length ? 
         teams.map((t) => (
@@ -138,7 +143,10 @@ export default function Stats() {
         )) : null
       }
       </Grid>
-      <Grid item xs={5}>
+      <Grid item xs={1}>
+
+      </Grid>
+      <Grid item xs={3}>
         {/* <Box display={'flex'} justifyContent={'space-evenly'}>
           <Card>
             <CardContent>
