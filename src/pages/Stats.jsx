@@ -128,7 +128,7 @@ export default function Stats() {
                   getRowId={getRowId}
                 />
               </Box>
-              <Box display={'flex'} justifyContent={'space-evenly'}>
+              <Box display={'flex'} justifyContent={'space-evenly'} sx={{mt: "0.5rem"}}>
                 <Typography>
                   Rule Avg : {t.characters.reduce((p,c) => p + ((c.refPoints - c.soldPoints) + 100), 0) / t.characters.length}
                 </Typography>
@@ -174,7 +174,7 @@ export default function Stats() {
             </CardContent>
           </Card>
         </Box>
-        <Box>
+        <Box sx={{mt: "1rem"}} display={'flex'} justifyContent={'center'}>
           <DataGrid
            columns={teamColmns}
            rows={teams}
