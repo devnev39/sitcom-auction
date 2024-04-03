@@ -5,8 +5,8 @@ import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import teamsApi from '../api/teamsApi';
 import { updateTeam } from '../feature/teamsSlice';
-import charactersApi from '../api/charactersApi';
-import { onUpdateCharacters } from '../feature/charactersSlice';
+// import charactersApi from '../api/charactersApi';
+// import { onUpdateCharacters } from '../feature/charactersSlice';
 
 const getRowId = (row) => {
   return row.id;
@@ -17,6 +17,31 @@ export default function Stats() {
   const characters = useSelector((state) => state.character.characters);
 
   const dispatch = useDispatch();
+
+  const teamColmns = useMemo(() => [
+    {
+      field: "#",
+      headerName: "#",
+      valueGetter: (value, row) => {
+        return teams.findIndex((i) => i.id == row.id);
+      },
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      width: 150
+    },
+    {
+      field: 'Rule',
+      headerName: "Rule",
+      valueGetter: (value, row) => {
+        return row.characters.length ?
+        row.characters.reduce((p,c) => p + ((c.refPoints - c.soldPoints) + 100), 0) :
+        NaN;
+      },
+      width: 150
+    }
+  ], [teams]);
 
   const characterColumns = useMemo(() => [
     {
@@ -40,6 +65,14 @@ export default function Stats() {
       field: 'soldPoints',
       headerName: 'Sold Points',
       width: 150
+    },
+    {
+      field: "Rule",
+      headerName: 'Rule',
+      width: 150,
+      valueGetter: (value, row) => {
+          return row.sold ? (row.refPoints - row.soldPoints) + 100 : NaN;
+      }
     }
   ], [characters]);
 
@@ -95,6 +128,11 @@ export default function Stats() {
                   getRowId={getRowId}
                 />
               </Box>
+              <Box display={'flex'} justifyContent={'space-evenly'}>
+                <Typography>
+                  Rule Avg : {t.characters.reduce((p,c) => p + ((c.refPoints - c.soldPoints) + 100), 0) / t.characters.length}
+                </Typography>
+              </Box>
             </CardContent>
           </Card>
         )) : null
@@ -136,7 +174,13 @@ export default function Stats() {
             </CardContent>
           </Card>
         </Box>
-        
+        <Box>
+          <DataGrid
+           columns={teamColmns}
+           rows={teams}
+           getRowId={getRowId}
+           />
+        </Box>
       </Grid>
     </Grid>
   )
