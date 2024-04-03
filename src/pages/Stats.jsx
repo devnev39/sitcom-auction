@@ -179,6 +179,7 @@ export default function Stats() {
             </CardContent>
           </Card>
         </Box> */}
+        <Box display={'flex'} justifyContent={'center'}>
           <Card sx={{my: "0.5rem", p: "1rem"}}>
             <Box>
             <Typography variant='h5'>
@@ -195,6 +196,7 @@ export default function Stats() {
               </Box>
             </CardContent>
           </Card>
+        </Box>
       </Grid>
     </Grid>
   )
