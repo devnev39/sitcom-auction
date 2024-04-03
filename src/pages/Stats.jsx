@@ -139,7 +139,7 @@ export default function Stats() {
       }
       </Grid>
       <Grid item xs={5}>
-        <Box display={'flex'} justifyContent={'space-evenly'}>
+        {/* <Box display={'flex'} justifyContent={'space-evenly'}>
           <Card>
             <CardContent>
               <Box>
@@ -173,7 +173,7 @@ export default function Stats() {
               </Typography>
             </CardContent>
           </Card>
-        </Box>
+        </Box> */}
         <Box sx={{mt: "1rem"}} display={'flex'} justifyContent={'center'}>
           <DataGrid
            columns={teamColmns}
