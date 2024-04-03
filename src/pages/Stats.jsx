@@ -29,7 +29,7 @@ export default function Stats() {
     {
       field: "name",
       headerName: "Name",
-      width: 250
+      width: 200
     },
     {
       field: 'Rule',
@@ -54,7 +54,7 @@ export default function Stats() {
     {
       field: 'name',
       headerName: "Name",
-      width: "150"
+      width: 150
     },
     {
       field: 'basePoints',
@@ -143,10 +143,7 @@ export default function Stats() {
         )) : null
       }
       </Grid>
-      <Grid item xs={1}>
-
-      </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={4}>
         {/* <Box display={'flex'} justifyContent={'space-evenly'}>
           <Card>
             <CardContent>
