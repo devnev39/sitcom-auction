@@ -24,10 +24,17 @@ const charactersSlice = createSlice({
         clearCharacters: (state) => {
             state.characters = [];
             state.loaded = false;
+        },
+
+        onUpdateCharacters : (state, action) => {
+            action.payload.forEach((chr) => {
+                const index = state.characters.findIndex((c) => c.id == chr.id);
+                state.characters.splice(index, 1, chr);
+            });
         }
     }
 })
 
-export const {setCharacters, updateCharacters, removeCharacter, clearCharacters} = charactersSlice.actions;
+export const {setCharacters, updateCharacters, removeCharacter, clearCharacters, onUpdateCharacters} = charactersSlice.actions;
 
 export default charactersSlice.reducer;

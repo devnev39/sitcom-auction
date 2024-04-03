@@ -5,6 +5,8 @@ import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import teamsApi from '../api/teamsApi';
 import { updateTeam } from '../feature/teamsSlice';
+import charactersApi from '../api/charactersApi';
+import { onUpdateCharacters } from '../feature/charactersSlice';
 
 const getRowId = (row) => {
   return row.id;
@@ -39,14 +41,13 @@ export default function Stats() {
       headerName: 'Sold Points',
       width: 150
     }
-  ], [teams]);
+  ], [characters]);
 
   useEffect(() => {
     const unsubs = [];
     if (teams.length) {
       teams.forEach((t) => {
         const unsub = teamsApi.onTeamUpdate(t.id, (data) => {
-          console.log(data);
           dispatch(updateTeam(data));
         });
         unsubs.push(unsub);
@@ -56,10 +57,23 @@ export default function Stats() {
     return () => {
       unsubs.forEach((u) => u());
     }
-  }, []);
+  }, [dispatch, teams]);
+
+  // useEffect(() => {
+  //   let unsub = undefined;
+  //   if(characters.length) {
+  //     unsub = charactersApi.onCharactersUpdate((data) => {
+  //       dispatch(onUpdateCharacters(data));
+  //     });
+  //   }
+
+  //   return () => {
+  //     if(unsub) unsub();
+  //   }
+  // }, [characters, dispatch]);
 
   return (
-    <Grid container gap={1}>
+    <Grid container>
       <Grid item xs={7}>
       {
         teams.length ? 
@@ -68,6 +82,9 @@ export default function Stats() {
             <Box>
               <Typography variant='h5'>
                 {t.name}
+              </Typography>
+              <Typography color={'red'}>
+                Remaining Budget : {t.currentBudget}
               </Typography>
             </Box>
             <CardContent>
@@ -82,6 +99,44 @@ export default function Stats() {
           </Card>
         )) : null
       }
+      </Grid>
+      <Grid item xs={5}>
+        <Box display={'flex'} justifyContent={'space-evenly'}>
+          <Card>
+            <CardContent>
+              <Box>
+              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                Total Players
+              </Typography>
+              <Typography variant="h5" component="div" align='center'>
+                {characters.length}
+              </Typography>
+              </Box>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent>
+              <Typography sx={{ fontSize: 14 }} color="text.primary" gutterBottom>
+                Sold Players
+              </Typography>
+              <Typography variant="h5" component="div" align='center'>
+                {characters.filter((c) => c.sold == true).length}
+              </Typography>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent>
+              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                Remaining Player
+              </Typography>
+              <Typography variant="h5" component="div" align='center'>
+                {characters.filter((c) => c.sold == false).length}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
+        
       </Grid>
     </Grid>
   )

@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "../db/firebase";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -29,5 +29,12 @@ export default {
         });
         const d = await getDoc(doc(db, 'characters', character.id));
         return d.data();
+    },
+
+    onCharactersUpdate: (callback) => {
+        const unsub = onSnapshot(collection(db, 'characters'), (docs) => {
+            callback(docs.docs.map((d) => d.data()));
+        });
+        return unsub;
     }
 };

@@ -14,10 +14,10 @@ import GavelIcon from '@mui/icons-material/Gavel';
 import { ComponentSelection } from '../context/componentSelection';
 import { UserAuth } from '../context/AuthContext';
 import GoogleIcon from '@mui/icons-material/Google';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { UserContext } from '../context/UserContext';
 import usersApi from '../api/usersApi';
 import { AlertContext } from '../context/AlertContext';
+import { Avatar } from '@mui/material';
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -47,7 +47,6 @@ function Navbar() {
 
   React.useEffect(() => {
     if (!user) return;
-    console.log(user.email);
     usersApi.getUserEmail(user.email).then((resp) => {
       if(resp.exists()) {
         setUser(resp.data());
@@ -192,7 +191,7 @@ function Navbar() {
                   googleSignIn();
                 }
               }} sx={{ p: 0 }}>
-                {user ? <AccountCircleIcon /> : <GoogleIcon />}
+                {user ? <Avatar src={user.photoURL} /> : <GoogleIcon />}
               </IconButton>
             </Tooltip>
             <Menu
