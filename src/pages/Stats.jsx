@@ -29,7 +29,7 @@ export default function Stats() {
     {
       field: "name",
       headerName: "Name",
-      width: 150
+      width: 250
     },
     {
       field: 'Rule',
@@ -182,13 +182,22 @@ export default function Stats() {
             </CardContent>
           </Card>
         </Box> */}
-        <Box sx={{mt: "1rem"}} display={'flex'} justifyContent={'center'}>
-          <DataGrid
-           columns={teamColmns}
-           rows={teams}
-           getRowId={getRowId}
-           />
-        </Box>
+          <Card sx={{my: "0.5rem", p: "1rem"}}>
+            <Box>
+            <Typography variant='h5'>
+                Rule
+              </Typography> 
+            </Box>
+            <CardContent>
+              <Box display={'flex'} justifyContent={'center'}>
+                <DataGrid
+                  columns={teamColmns}
+                  rows={teams}
+                  getRowId={getRowId}
+                />
+              </Box>
+            </CardContent>
+          </Card>
       </Grid>
     </Grid>
   )
