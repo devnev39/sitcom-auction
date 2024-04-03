@@ -23,7 +23,7 @@ export default function Stats() {
       field: "#",
       headerName: "#",
       valueGetter: (value, row) => {
-        return teams.findIndex((i) => i.id == row.id);
+        return teams.findIndex((i) => i.id == row.id) + 1;
       },
     },
     {
